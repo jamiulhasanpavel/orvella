@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -126,5 +126,220 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+.neon-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.neon-button > .button-content {
+  position: relative;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+}
+
+.neon-button:hover {
+  box-shadow:
+    0 0 15px rgb(0 234 255 / 25%),
+    0 0 25px rgb(255 0 204 / 20%);
+}
+
+.animated-rounded-border {
+  --neon-border-angle: 0deg;
+  isolation: isolate;
+}
+
+.animated-rounded-border::before {
+  position: absolute;
+  z-index: 0;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--neon-border-angle),
+    transparent 0deg 95deg,
+    #00eaff 125deg,
+    transparent 155deg 205deg,
+    #ff00cc 235deg,
+    transparent 265deg 360deg
+  );
+  content: "";
+  animation: neon-rounded-border-rotate 4s linear infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.animated-rounded-border > * {
+  position: relative;
+  z-index: 1;
+}
+
+@property --neon-border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes neon-rounded-border-rotate {
+  to {
+    --neon-border-angle: 360deg;
+  }
+}
+
+.cta-plane-flight {
+  animation: cta-plane-flight 7s ease-in-out infinite alternate;
+}
+
+.footer-enter {
+  animation: cta-content-enter 700ms ease-out both;
+}
+
+.footer-brand-enter {
+  animation: cta-content-enter 700ms 80ms ease-out both;
+}
+
+.footer-column-enter {
+  animation: cta-content-enter 650ms ease-out both;
+}
+
+.footer-link {
+  display: inline-block;
+  transition:
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.footer-link:hover {
+  transform: translateX(4px);
+}
+
+.footer-social {
+  transition:
+    color 200ms ease,
+    transform 200ms ease;
+}
+
+.footer-social:hover {
+  transform: translateY(-4px) scale(1.12);
+}
+
+.cta-background-drift {
+  animation: cta-background-drift 24s ease-in-out infinite alternate;
+}
+
+.cta-plane-photo-drift {
+  animation: cta-plane-photo-drift 18s ease-in-out infinite alternate;
+}
+
+.cta-content-enter {
+  animation: cta-content-enter 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.cta-button-enter {
+  animation: cta-content-enter 900ms 250ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes cta-background-drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.09);
+  }
+}
+
+@keyframes cta-plane-photo-drift {
+  from {
+    background-position: 55% center;
+  }
+  to {
+    background-position: 75% center;
+  }
+}
+
+@keyframes cta-content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cta-plane-flight {
+  from {
+    transform: translate(0, 0) rotate(-12deg);
+  }
+  to {
+    transform: translate(-36vw, 36px) rotate(-5deg);
+  }
+}
+
+.top-light,
+.bottom-light {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 65 400;
+}
+
+.top-light {
+  stroke: #00eaff;
+  filter: drop-shadow(0 0 5px #00eaff) drop-shadow(0 0 10px #00eaff);
+  animation: topMove 2.5s linear infinite;
+}
+
+.bottom-light {
+  stroke: #ff00cc;
+  filter: drop-shadow(0 0 5px #ff00cc) drop-shadow(0 0 10px #ff00cc);
+  animation: bottomMove 2.5s linear infinite;
+}
+
+@keyframes topMove {
+  from {
+    stroke-dashoffset: 465;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes bottomMove {
+  from {
+    stroke-dashoffset: 465;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-light,
+  .bottom-light,
+  .animated-rounded-border::before,
+  .cta-plane-flight,
+  .cta-background-drift,
+  .cta-plane-photo-drift,
+  .cta-content-enter,
+  .cta-button-enter,
+  .footer-enter,
+  .footer-brand-enter,
+  .footer-column-enter {
+    animation: none;
+  }
+
+  .footer-link,
+  .footer-social {
+    transition: none;
   }
 }

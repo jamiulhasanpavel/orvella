@@ -50,7 +50,7 @@ const WhyChooseUs = () => {
             return (
               <div
                 key={feature.title}
-                className="min-h-[249px] border-b border-[#d8e2e4] bg-white px-10 py-10 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="min-h-[249px] rounded-2xl border border-[#d8e2e4] bg-white px-8 py-9 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#12a3c1]/60 hover:shadow-lg hover:shadow-cyan-900/10 md:px-10 md:py-10"
               >
                 {/* Icon */}
                 <Icon

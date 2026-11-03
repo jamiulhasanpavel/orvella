@@ -58,13 +58,11 @@ function Carousel({
     },
     plugins
   )
-  const [canScrollPrev, setCanScrollPrev] = React.useState(false)
-  const [canScrollNext, setCanScrollNext] = React.useState(false)
+  const [, setCarouselRevision] = React.useState(0)
 
   const onSelect = React.useCallback((api: CarouselApi) => {
     if (!api) return
-    setCanScrollPrev(api.canScrollPrev())
-    setCanScrollNext(api.canScrollNext())
+    setCarouselRevision((revision) => revision + 1)
   }, [])
 
   const scrollPrev = React.useCallback(() => {
@@ -95,14 +93,17 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)
 
     return () => {
-      api?.off("select", onSelect)
+      api.off("reInit", onSelect)
+      api.off("select", onSelect)
     }
   }, [api, onSelect])
+
+  const canScrollPrev = api?.canScrollPrev() ?? false
+  const canScrollNext = api?.canScrollNext() ?? false
 
   return (
     <CarouselContext.Provider
@@ -185,18 +186,20 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute touch-manipulation rounded-full",
+        "animated-rounded-border neon-button relative isolate overflow-hidden touch-manipulation rounded-full",
         orientation === "horizontal"
-          ? "inset-y-0 -left-12 my-auto"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+          ? "absolute inset-y-0 -left-12 my-auto"
+          : "absolute -top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
-      <ChevronLeftIcon />
-      <span className="sr-only">Previous slide</span>
+      <span className="button-content">
+        <ChevronLeftIcon />
+        <span className="sr-only">Previous slide</span>
+      </span>
     </Button>
   )
 }
@@ -215,18 +218,20 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute touch-manipulation rounded-full",
+        "animated-rounded-border neon-button relative isolate overflow-hidden touch-manipulation rounded-full",
         orientation === "horizontal"
-          ? "inset-y-0 -right-12 my-auto"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+          ? "absolute inset-y-0 -right-12 my-auto"
+          : "absolute -bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <ChevronRightIcon />
-      <span className="sr-only">Next slide</span>
+      <span className="button-content">
+        <ChevronRightIcon />
+        <span className="sr-only">Next slide</span>
+      </span>
     </Button>
   )
 }
