@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import WhyChooseUs from "@/components/WhyChooseUs";
+import FeaturedDestinations from "@/components/FeaturedDestinations";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
         sizes="100vw"
         className="block h-auto w-full"
       />
+      <FeaturedDestinations />
+      <WhyChooseUs />
     </main>
   );
 }
